@@ -42,8 +42,8 @@ where the rest of the inputs are going to be explained afterward.
 As we can see in the previous section we used the **xlm-roberta-base** tokeinzer. This is a *subwords* tokeinzer what means that it can split words into several subwords (tokens) during the tokenization process. In the context of NER it creates a difficulty for dealing with labels annotation for subwords. In our implementation we contemplate two possibilities considering **l** as the entity of the word associated with the main entity **LABEL**:
 
 1. Assign to the first subword the entity **l** and the **I-LABEL** entity for the rest.
-2. Assign **l** to every subword
-3. Assign **l** to the first subword and **-100** for the rest, being this a label for special tokens as **<s>** and **<\s>**
+2. Assign **l** to every subword.
+3. Assign **l** to the first subword and **-100** for the rest, being this a label for special tokens.
 
 The method for tokenization and entities-alignment is:
 
