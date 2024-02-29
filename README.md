@@ -391,7 +391,7 @@ trainer = Trainer(
 
 After three epochs of trining we obtained the following learning curves (the complete report is available in [wandb](https://wandb.ai/javier-lopetegui-gonzalez/Multilingual-NER-Chia_dataset/reports/NER-Chia-dataset-training--Vmlldzo2OTQxNDA5)):
 
-<img src="./images/dataset_split.png"
+<img src="./images/training_chia.png"
      alt="labels_chia"
      style="float: left; margin-right: 10px;" />
 
