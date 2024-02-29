@@ -486,19 +486,25 @@ Now we are going to present some of the final annotations:
 
 <img src="./images/annotation1.png"
      alt="labels_chia"
-     style="float: left; margin-right: 10px;"/>
+     style="float: left; margin-right: 10px;"
+    width=350
+     height=350>
 
 Probar.
 
 <img src="./images/annotation2.png"
      alt="labels_chia"
-     style="float: left; margin-right: 10px;"/>
+     style="float: left; margin-right: 10px;"
+    width=150
+     height=350/>
 
 Probar.
 
 <img src="./images/annotation3.png"
      alt="labels_chia"
-     style="float: left; margin-right: 10px;"/>
+     style="float: left; margin-right: 10px;"
+    width=150
+     height=350/>
 
 ### Further work
 
