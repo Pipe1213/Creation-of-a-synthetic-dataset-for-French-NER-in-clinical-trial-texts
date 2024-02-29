@@ -322,7 +322,7 @@ Then, we obtained the following results:
 <img src="./images/translation_evaluation.png"
      alt="labels_chia"
      style="float: left; margin-right: 10px;"
-     width=300
+     width=350
      height=200/>
 
 As we can see, the the model [Helsinki-NLP/opus-mt-en-fr](https://huggingface.co/Helsinki-NLP/opus-mt-en-fr) has better results for all the evaluated metrics.
