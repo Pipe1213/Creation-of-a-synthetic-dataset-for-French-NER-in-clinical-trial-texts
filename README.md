@@ -395,7 +395,113 @@ After three epochs of trining we obtained the following learning curves (the com
      alt="labels_chia"
      style="float: left; margin-right: 10px;" />
 
+The results obtained over the English dataset are in the order we were expecting if we take into account the results reported for this dataset previously in the literature, particularly in the paper [Transformer-Based Named Entity Recognition for Parsing Clinical Trial Eligibility Criteria](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8373041/).
+
 ### French-CHIA dataset annotation
+
+Then, once we trained the model over the English version of the dataset, we were ready to go to the main point of our work: the annotations over French sentences. The code for this process is available in the notebook [annotate_french_corpus](https://github.com/jlopetegui98/Creation-of-a-synthetic-dataset-for-French-NER-in-clinical-trial-texts/blob/main/NER-chia-dataset/annotate_french_corpus.ipynb).
+
+For doing the annotations we used the same tokenizer explained before for **XLM-RoBERTa** and the model obtained after fine-tuning on English annotations:
+
+```
+    # load model
+    model = torch.load(f'{models_path}/chia-multilingual-ner.pt')
+    # load tokenizer
+    tokenizer = AutoTokenizer.from_pretrained(base_model)
+```
+
+For each sentence in the dataset we got the sepparated words (just considering at the beggining the space separations) and the file they came from as its name is related with the original crilinal trial associated:
+
+```
+    for file, sentence in sentences:
+        data_french.append({
+            'tokens': sentence.split(),
+            'file': file
+        })
+    data_french = Dataset.from_pandas(pd.DataFrame(data_french))
+```
+
+For tokenization process we considered important to keep the word_ids for the recovery of the original sentences after the annotations. Then, we applied the following method over the entire dataset:
+
+```
+    def tokenize_sentence(sentence, tokenizer):
+        """
+        Tokenize a sentence using the tokenizer and keeps the word ids
+        inputs:
+            sentence: str, sentence to tokenize
+            tokenizer: tokenizer, tokenizer to use
+        outputs:
+            tokenized_sentence: dict, tokenized sentence
+        """
+        tokenized_sentence = tokenizer(sentence, is_split_into_words=True, truncation=True, padding='max_length', max_length=512)
+        words_ids  = []
+        for i in range(len(sentence)):
+            word_ids_sentence = tokenized_sentence.word_ids(batch_index=i)
+            words_ids.append(word_ids_sentence)
+        tokenized_sentence['word_ids'] = words_ids
+        return tokenized_sentence
+```
+
+We used a DataLoader instance for doing the annotations using batches of $size=16$ as defined in the next line:
+
+```
+    data_loader = torch.utils.data.DataLoader(data, batch_size=16)
+```
+
+Then we made the annotations using the loaded model as follow:
+
+```
+    labels = []
+    for batch in tqdm(data_loader):
+
+        batch['input_ids'] = torch.LongTensor(np.column_stack(np.array(batch['input_ids']))).to(device)
+        batch['attention_mask'] = torch.LongTensor(np.column_stack(np.array(batch['attention_mask']))).to(device)
+        batch_tokenizer = {'input_ids': batch['input_ids'], 'attention_mask': batch['attention_mask']}
+        # break
+        with torch.no_grad():
+            outputs = model(**batch_tokenizer)
+
+        labels_batch = torch.argmax(outputs.logits, dim=2).to('cpu').numpy()
+        labels.extend([list(labels_batch[i]) for i in range(labels_batch.shape[0])])
+
+        del batch
+        del outputs
+        torch.cuda.empty_cache()
+```
+
+We got the tokenizer *inputs_id* and *attention_mask* for each batch and passed them as input for the model. Then, we got the softmax output and got the maximum value for each token among all the possible entities. 
+
+After that, we used the method **annotate_sentences** explained in the tokenizer section of this document to annotated the original sentences following the ideas explained before. After that, we created the corresponding dataset instance:
+
+```
+    Dataset({
+        features: ['tokens', 'annotated_labels', 'annotated_labels_max', 'file'],
+        num_rows: 12423
+    })
+```
+
+Finally we uploaded the dataset to hugginface and it is available in [chia-ner-french](https://huggingface.co/datasets/JavierLopetegui/chia-ner-french).
+
+Now we are going to present some of the final annotations:
+
+<img src="./images/annoation1.png"
+     alt="labels_chia"
+     style="float: left; margin-right: 10px;"
+     width=350
+     height=350/>
+    
+<img src="./images/annoation2.png"
+     alt="labels_chia"
+     style="float: left; margin-right: 10px;" >
+
+<img src="./images/annotation3.png"
+     alt="labels_chia"
+     style="float: left; margin-right: 10px;">
 
 ### Further work
 
+We consider that to improve what we have done we should make an evaluation process for the annotations. We want to perform human annotations over a subset of the sentences and then evaluate the usual metrics on the model annotations. Furthermore, using this human annotations to fine-tune the English trained model could also lead to more accurately annotations.
+
+On the other hand, for the translation process, using a more complex model such as modern **LLM** as *Mistral7-B*, *Llama* or other open-source models would improve the results.
+
+Finally, we found it challenging the capacity of multilingual transformers-based model such as **XLM-RoBERTa** to accomplish good performances on cross-lingual approachs for tasks such as NER. Then, to studying deeply which features of these model make them capable of doing that is something we are really interested in.
