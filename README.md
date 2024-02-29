@@ -261,7 +261,9 @@ Then, the dataset we are working with is annotated in [BIO](https://en.wikipedia
 
 <img src="./images/labels_chia.png"
      alt="labels_chia"
-     style="float: left; margin-right: 10px;" />
+     style="float: left; margin-right: 10px;"
+     width=250
+     height=250 />
 
 We can nottice that there are three labels: *Mood, Device* and *Pregnancy_consideration* which are underrepresented compared with the rest. Then, we decided for the scope of this work to focus just in the entities with more than 1000 examples, what left us with:
 
