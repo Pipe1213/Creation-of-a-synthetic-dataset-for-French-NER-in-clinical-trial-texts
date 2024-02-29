@@ -495,8 +495,8 @@ Probar.
 <img src="./images/annotation2.png"
      alt="labels_chia"
      style="float: left; margin-right: 10px;"
-    width=250
-     height=350/>
+    width=350
+     height=450/>
 
 Probar.
 
