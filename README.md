@@ -490,9 +490,13 @@ Now we are going to present some of the final annotations:
      width=350
      height=350/>
 
+Probar.
+
 <img src="./images/annoation2.png"
      alt="labels_chia"
      style="float: left; margin-right: 10px;" />
+
+Probar.
 
 <img src="./images/annotation3.png"
      alt="labels_chia"
