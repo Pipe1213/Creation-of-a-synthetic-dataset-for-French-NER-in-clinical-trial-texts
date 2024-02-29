@@ -315,6 +315,18 @@ for file in tqdm(files):
 
 ### Evaluating Translation
 
+To evaluate the translation model that we used, we used the [BLEU-score](), [TER]() and [Meteor]() metrics. As reference for these metrics evaluation we used a subset of 100 trials and we translated them using [GPT-4](https://arxiv.org/abs/2303.08774) paid version. Then, over the same subset of trials we made translations using [T5](https://huggingface.co/google-t5/t5-base) model available in hugginface for translation. We decided to use this models as it is a similar moder with respect to the one we used.
+
+Then, we obtained the following results:
+
+<img src="./images/translation_evaluation.png"
+     alt="labels_chia"
+     style="float: left; margin-right: 10px;"
+     width=250
+     height=200 />
+
+As we can see, the the model [Helsinki-NLP/opus-mt-en-fr](https://huggingface.co/Helsinki-NLP/opus-mt-en-fr) has better results for all the evaluated metrics.
+
 ### Training XLM-RoBERTa model over english CHIA dataset
 
 ### French-CHIA dataset annotation
