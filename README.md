@@ -489,19 +489,17 @@ Now we are going to present some of the final annotations:
      style="float: left; margin-right: 10px;"
      width=350
      height=350/>
-    
+
 <img src="./images/annoation2.png"
      alt="labels_chia"
-     style="float: left; margin-right: 10px;" >
+     style="float: left; margin-right: 10px;" />
 
 <img src="./images/annotation3.png"
      alt="labels_chia"
-     style="float: left; margin-right: 10px;">
+     style="float: left; margin-right: 10px;"/>
 
 ### Further work
 
 We consider that to improve what we have done we should make an evaluation process for the annotations. We want to perform human annotations over a subset of the sentences and then evaluate the usual metrics on the model annotations. Furthermore, using this human annotations to fine-tune the English trained model could also lead to more accurately annotations.
 
 On the other hand, for the translation process, using a more complex model such as modern **LLM** as *Mistral7-B*, *Llama* or other open-source models would improve the results.
-
-Finally, we found it challenging the capacity of multilingual transformers-based model such as **XLM-RoBERTa** to accomplish good performances on cross-lingual approachs for tasks such as NER. Then, to studying deeply which features of these model make them capable of doing that is something we are really interested in.
