@@ -484,17 +484,15 @@ Finally we uploaded the dataset to hugginface and it is available in [chia-ner-f
 
 Now we are going to present some of the final annotations:
 
-<img src="./images/annoation1.png"
+<img src="./images/annotation1.png"
      alt="labels_chia"
-     style="float: left; margin-right: 10px;"
-     width=350
-     height=350/>
+     style="float: left; margin-right: 10px;"/>
 
 Probar.
 
-<img src="./images/annoation2.png"
+<img src="./images/annotation2.png"
      alt="labels_chia"
-     style="float: left; margin-right: 10px;" />
+     style="float: left; margin-right: 10px;"/>
 
 Probar.
 
