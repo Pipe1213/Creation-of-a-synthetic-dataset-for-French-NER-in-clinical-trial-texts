@@ -313,9 +313,11 @@ for file in tqdm(files):
         f.write('\n'.join([t['translation_text'] for t in translated_sentences]))
 ```
 
+The entire translation code is available in the notebook [translation_model](https://github.com/jlopetegui98/Creation-of-a-synthetic-dataset-for-French-NER-in-clinical-trial-texts/blob/main/TranslationModel/translation_model.ipynb).
+
 ### Evaluating Translation
 
-To evaluate the translation model that we used, we used the [BLEU-score](), [TER]() and [Meteor]() metrics. As reference for these metrics evaluation we used a subset of 100 trials and we translated them using [GPT-4](https://arxiv.org/abs/2303.08774) paid version. Then, over the same subset of trials we made translations using [T5](https://huggingface.co/google-t5/t5-base) model available in hugginface for translation. We decided to use this models as it is a similar moder with respect to the one we used.
+To evaluate the translation model that we used, we used the [BLEU-score](https://huggingface.co/spaces/evaluate-metric/bleu), [TER](https://huggingface.co/spaces/evaluate-metric/ter) and [Meteor](https://huggingface.co/spaces/evaluate-metric/meteor) metrics. The code for evaluation process is available in the notebook [evaluate_translation](https://github.com/jlopetegui98/Creation-of-a-synthetic-dataset-for-French-NER-in-clinical-trial-texts/blob/main/TranslationModel/evaluate_translation.ipynb) As reference for these metrics evaluation we used a subset of 100 trials and we translated them using [GPT-4](https://arxiv.org/abs/2303.08774) paid version. Then, over the same subset of trials we made translations using [T5](https://huggingface.co/google-t5/t5-base) model available in hugginface for translation. We decided to use this models as it is a similar moder with respect to the one we used.
 
 Then, we obtained the following results:
 
@@ -328,6 +330,70 @@ Then, we obtained the following results:
 As we can see, the the model [Helsinki-NLP/opus-mt-en-fr](https://huggingface.co/Helsinki-NLP/opus-mt-en-fr) has better results for all the evaluated metrics.
 
 ### Training XLM-RoBERTa model over english CHIA dataset
+
+The next step in the process was to fine-tune **XLM-RoBERTa** over the English annotated data in the used **CHIA** dataset. The code for the training is available in the notebook [model_ner_chia](https://github.com/jlopetegui98/Creation-of-a-synthetic-dataset-for-French-NER-in-clinical-trial-texts/blob/main/NER-chia-dataset/model_ner_chia.ipynb). 
+
+For the training and validation process we splitted the available dataset into *training, validation* and *test* subsets as we can see in the following code:
+
+```
+    chia_eng_train_test = chia_eng_dataset.train_test_split(test_size=0.2)
+    chia_eng_test_val = chia_eng_train_test["test"].train_test_split(test_size=0.5)
+    chia_eng_dataset = DatasetDict({
+        "train": chia_eng_train_test["train"],
+        "test": chia_eng_test_val["test"],
+        "validation": chia_eng_test_val["train"]
+    })
+```
+
+After the splitting we got the following distribution for the dataset:
+
+<img src="./images/dataset_split.png"
+     alt="labels_chia"
+     style="float: left; margin-right: 10px;"
+     width=350
+     height=350/>
+
+The training process was similar as for **MultiNERD** dataset case. We used the same huggingface [Trainer](https://huggingface.co/docs/transformers/main_classes/trainer) class. The arguments for trainig were:
+
+```
+# define the training arguments
+args = TrainingArguments(
+    report_to = 'wandb',
+    run_name = 'chia_multilingual_ner',
+    evaluation_strategy = "steps",
+    learning_rate=2e-5,
+    per_device_train_batch_size=16,
+    per_device_eval_batch_size=8,
+    num_train_epochs=3,
+    weight_decay=0.01,
+    logging_steps=50,
+    overwrite_output_dir = True,
+    eval_steps=50,
+    save_steps=1000,
+    output_dir = 'chia_multilingual_ner'
+)
+```
+
+Then, the definition of the trainer instance was:
+
+```
+# define the trainer
+trainer = Trainer(
+    model,
+    args,
+    train_dataset=chia_eng_dataset["train"],
+    eval_dataset=chia_eng_dataset["validation"],
+    data_collator=data_collator,
+    tokenizer=tokenizer,
+    compute_metrics=compute_metrics
+)
+```
+
+After three epochs of trining we obtained the following learning curves (the complete report is available in [wandb](https://wandb.ai/javier-lopetegui-gonzalez/Multilingual-NER-Chia_dataset/reports/NER-Chia-dataset-training--Vmlldzo2OTQxNDA5)):
+
+<img src="./images/dataset_split.png"
+     alt="labels_chia"
+     style="float: left; margin-right: 10px;" />
 
 ### French-CHIA dataset annotation
 
