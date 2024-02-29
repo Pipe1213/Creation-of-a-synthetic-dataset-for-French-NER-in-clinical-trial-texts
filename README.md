@@ -496,15 +496,15 @@ Probar.
      alt="labels_chia"
      style="float: left; margin-right: 10px;"
     width=350
-     height=450/>
+     height=550/>
 
 Probar.
 
 <img src="./images/annotation3.png"
      alt="labels_chia"
      style="float: left; margin-right: 10px;"
-    width=150
-     height=350/>
+    width=350
+     height=550/>
 
 ### Further work
 
