@@ -1,4 +1,4 @@
-# Creation-of-a-synthetic-dataset-for-French-NER-in-clinical-trial-texts
+# Creation of a Synthetic Dataset for French Named Entity Recognition (NER) in Clinical Trial Texts
 Final project of Hands-On NLP course at Université Paris-Saclay M1-AI
 
 **Authors:**
@@ -8,7 +8,23 @@ Final project of Hands-On NLP course at Université Paris-Saclay M1-AI
 3. Javier Alejandro Lopetegui González
 
 *keywords:* machine translation, NER, multilingual, medical trials
-### Introduction:
+
+This project focuses on creating a synthetic dataset for French NER in clinical trial texts, aimed at enhancing NLP applications in the medical field. The dataset was generated using neural machine translation and fine-tuning XLM-RoBERTa.
+
+## Project Overview
+- **Goal**: Generate a synthetic dataset to improve French language support in NER tasks, particularly for medical texts.
+- **Key Techniques**: Neural machine translation, transfer learning, fine-tuning for NER.
+- **Tools & Libraries**: Python, Hugging Face Transformers, NLTK, Jupyter Notebook.
+
+## Key Features
+- **Synthetic Data Generation**: Created French NER annotations from English using neural translation models.
+- **Model Fine-Tuning**: Fine-tuned XLM-RoBERTa on the generated data for enhanced NER performance.
+
+## Results
+- **Model Accuracy**: Achieved a notable improvement in NER performance with synthetic data.
+
+
+## Introduction:
 
 The objective of this work is to create a dataset in French for Named Entity Recognition (NER) in the context of medical trials eligibility criteria. We are going to use a cross-lingual approach to make it possible based on the idea from this [blog](https://pradeepundefned.medium.com/how-to-do-named-entity-recognition-for-languages-other-than-english-bac58898ad33).
 
